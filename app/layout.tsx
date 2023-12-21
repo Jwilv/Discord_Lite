@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
 import { Open_Sans } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 
 const inter = Open_Sans({ subsets: ['latin'] })
 
@@ -17,8 +18,19 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
+      <html lang="en" suppressHydrationWarning>
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            forcedTheme='dark'
+            enableSystem={false}
+            storageKey='discord-theme'
+
+          >
+            {children}
+          </ThemeProvider>
+        </body>
       </html>
     </ClerkProvider>
   )

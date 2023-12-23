@@ -20,7 +20,8 @@ model Profile {
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
 
-  Server    Server[]
+  Server  Server[]
+  members Member[]
 }
 
 model Server {
@@ -32,8 +33,29 @@ model Server {
   profileId String  @db.ObjectId
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  @@index([profileId])
-
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updateAt  DateTime @updatedAt
+  
+  Member    Member[]
+
+  @@index([profileId])
+}
+
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+model Member {
+  id   String     @id @default(auto()) @map("_id") @db.ObjectId
+  role MemberRole @default(GUEST)
+
+  profileId String  @db.ObjectId
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  serverId String @db.ObjectId
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
 }

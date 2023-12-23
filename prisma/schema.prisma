@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Profile {
-  id       String @id @default(auto()) @map("_id")  @db.ObjectId
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
   userId   String @unique
   name     String
   imageUrl String
@@ -19,4 +19,21 @@ model Profile {
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
+
+  Server    Server[]
+}
+
+model Server {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  imageUrl   String
+  inviteCode String
+
+  profileId String  @db.ObjectId
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }

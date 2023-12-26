@@ -7,11 +7,11 @@ export const initialProfile = async () => {
 
     if (!user) return redirectToSignIn()
 
-    const profile = await getProfileById(user.id)
+    const profile = await getProfileById(user.id);
 
     if (profile) return profile;
 
-    const newProfile = createNewProfile(user);
+    const newProfile = await createNewProfile(user);
 
     return newProfile
 };

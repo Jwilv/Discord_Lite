@@ -28,7 +28,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react';
 import { FileUpload } from '../file-upload';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -65,7 +65,7 @@ export const InitialModal = () => {
         await axios.post('/api/server', values)
 
         form.reset();
-        router.reload();
+        router.refresh();
         window.location.reload();
     }
 

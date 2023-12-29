@@ -29,6 +29,8 @@ import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react';
 import { FileUpload } from '../file-upload';
 import { useRouter } from 'next/navigation';
+import { Title, Description} from '../modal';
+import { initialModal } from '@/constants';
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -76,13 +78,8 @@ export const InitialModal = () => {
             <DialogContent className="bg-white text-black p-0 
             overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
-                    <DialogTitle className="text-center text-2xl font-bold">
-                        Customize your server
-                    </DialogTitle>
-                    <DialogDescription className="text-center text-zinc-500">
-                        Give your server a personality with a name and an image.
-                        You can always change it later.
-                    </DialogDescription>
+                    <Title title={initialModal.title} />
+                    <Description description={initialModal.description} />
                 </DialogHeader>
 
                 <Form {...form}>

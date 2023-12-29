@@ -29,8 +29,9 @@ import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react';
 import { FileUpload } from '../file-upload';
 import { useRouter } from 'next/navigation';
-import { Title, Description} from '../modal';
+import { Title, Description } from '../modal';
 import { initialModal } from '@/constants';
+import { FieldImage, FieldInput } from '../Field';
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -76,7 +77,8 @@ export const InitialModal = () => {
     return (
         <Dialog open>
             <DialogContent className="bg-white text-black p-0 
-            overflow-hidden">
+                overflow-hidden"
+            >
                 <DialogHeader className="pt-8 px-6">
                     <Title title={initialModal.title} />
                     <Description description={initialModal.description} />
@@ -93,15 +95,7 @@ export const InitialModal = () => {
                                     control={form.control}
                                     name='imageUrl'
                                     render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <FileUpload
-                                                    endpoint='serverImage'
-                                                    value={field.value}
-                                                    onChange={field.onChange}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
+                                        <FieldImage field={field} endpoint="serverImage" />
                                     )}
                                 />
                             </div>
@@ -110,22 +104,7 @@ export const InitialModal = () => {
                                 control={form.control}
                                 name='name'
                                 render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel
-                                            className='uppercase text-xs font-bold text-zinc-500
-                                    dark:text-secondary/70'
-                                        >Server Name</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                disabled={isLoading}
-                                                className='bg-zinc-300/50 border-0 focus-visible:ring-0
-                                                text-black focus-visible:ring-offset-0'
-                                                placeholder="Enter server name"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
+                                    <FieldInput field={field} isLoading={isLoading} label={'Server name'} />
                                 )}
                             />
                         </div>

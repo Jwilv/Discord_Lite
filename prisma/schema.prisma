@@ -19,7 +19,6 @@ model Profile {
   updateAt  DateTime @updatedAt
 
   servers  Server[]
-  members  Member[]
   channels Channel[]
 }
 
@@ -52,12 +51,10 @@ model Member {
   role MemberRole @default(GUEST)
 
   profileId String
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   serverId String
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
-  @@index([profileId])
   @@index([serverId])
 }
 

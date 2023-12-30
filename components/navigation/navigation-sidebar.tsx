@@ -2,6 +2,7 @@ import { currentUser } from "@/lib/current-user";
 import { getServersByUserId } from "@/services/server";
 import { redirect } from 'next/navigation'
 import { NavigationAction } from "./navigation-action";
+import { Separator } from "@/components/ui/separator";
 
 
 export const NavigationSidebar = async () => {
@@ -18,6 +19,7 @@ export const NavigationSidebar = async () => {
                 w-full dark:bg-[#1E1F22] py-3"
         >
             <NavigationAction />
+            <Separator />
         </div>
     )
 }

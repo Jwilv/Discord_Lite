@@ -1,13 +1,13 @@
 import { currentUser, redirectToSignIn } from '@clerk/nextjs'
 
-import { createNewProfile, getProfileById } from '@/services';
+import { createNewProfile, getProfileByUserId } from '@/services';
 
 export const initialProfile = async () => {
     const user = await currentUser()
 
     if (!user) return redirectToSignIn()
 
-    const profile = await getProfileById(user.id);
+    const profile = await getProfileByUserId(user.id);
 
     if (profile) return profile;
 

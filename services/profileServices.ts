@@ -1,7 +1,7 @@
 import { db } from '@/lib/db'
 import { User } from '@clerk/nextjs/server';
 
-export const getProfileById = async (id: string) => {
+export const getProfileByUserId = async (id: string) => {
     return await db.profile.findUnique({
         where: {
             userId: id

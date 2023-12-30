@@ -1,4 +1,4 @@
-import { getProfileById } from "@/services";
+import { getProfileByUserId } from "@/services";
 import { createServer } from "@/services/server";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
         const { name, imageUrl }: { name: string, imageUrl: string } = await req.json();
         const { userId } = auth();
-        const profile = await getProfileById(userId!)
+        const profile = await getProfileByUserId(userId!)
 
         if (!profile) {
             return new NextResponse('Unauthorized', { status: 401 });

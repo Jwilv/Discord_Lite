@@ -19,7 +19,7 @@ export const NavigationSidebar = async () => {
                 w-full dark:bg-[#1E1F22] py-3"
         >
             <NavigationAction />
-            <Separator />
+            <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" />
         </div>
     )
 }

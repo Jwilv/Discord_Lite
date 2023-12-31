@@ -69,6 +69,8 @@ model Channel {
   name String
   type ChannelType @default(TEXT)
 
+  createdAt DateTime @default(now())
+
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 

@@ -60,3 +60,20 @@ export const getServerById = async (serverId: string) => {
 
     return server
 }
+
+export const getServerChannelsById = async (serverId: string) => {
+    const serverChannels = await db.server.findUnique({
+        where: {
+            id: serverId
+        },
+        include: {
+            channels: {
+                orderBy: {
+                    createdAt: "asc"
+                }
+            },
+        },
+    });
+
+    return serverChannels
+}

@@ -1,7 +1,6 @@
 import { db } from "@/lib/db"
 import { MemberRole } from "@prisma/client";
 import { v4 as uuidv4 } from 'uuid'
-import { async } from '../app/api/server/route';
 import { currentUser } from "@/lib/current-user";
 
 interface CreateServerProps {

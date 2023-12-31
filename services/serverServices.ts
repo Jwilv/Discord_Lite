@@ -1,12 +1,12 @@
 import { db } from '@/lib/db'
-import { MemberRole } from "@prisma/client";
+import { MemberRole, Profile } from "@prisma/client";
 import { v4 as uuidv4 } from 'uuid'
 import { currentUser } from "@/lib/current-user";
 
 interface CreateServerProps {
     name: string,
     imageUrl: string,
-    profileId: string
+    profile: Profile
 }
 
 export const getFirstServerByProfileId = async (profileId: string) => {
@@ -24,18 +24,23 @@ export const getFirstServerByProfileId = async (profileId: string) => {
 
 
 
-export const createServer = async ({ name, imageUrl, profileId }: CreateServerProps) => {
+export const createServer = async ({ name, imageUrl, profile }: CreateServerProps) => {
     const server = await db.server.create({
         data: {
             name,
             imageUrl,
             inviteCode: uuidv4(),
-            profileId: profileId,
+            profileId: profile.id,
             channels: {
-                create: { name: "general", profileId: profileId }
+                create: { name: "general", profileId: profile.id }
             },
             members: {
-                create: { profileId: profileId, role: MemberRole.ADMIN }
+                create: {
+                    profileId: profile.id,
+                    role: MemberRole.ADMIN,
+                    name: profile.name,
+                    imageUrl: profile.imageUrl,
+                }
             }
         }
     });

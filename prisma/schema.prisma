@@ -49,13 +49,16 @@ enum MemberRole {
 model Member {
   id   String     @id @default(uuid())
   role MemberRole @default(GUEST)
+  name     String
+  imageUrl String @db.Text 
 
   profileId String
-
+  
   serverId String
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   @@index([serverId])
+
 }
 
 enum ChannelType {

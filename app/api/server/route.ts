@@ -14,7 +14,7 @@ export async function POST(req: Request) {
             return new NextResponse('Unauthorized', { status: 401 });
         }
 
-        const server = await createServer({ name, imageUrl, profileId: profile.id });
+        const server = await createServer({ name, imageUrl, profile });
 
         return NextResponse.json(server);
 

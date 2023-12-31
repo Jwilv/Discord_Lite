@@ -6,6 +6,7 @@ import { getChannelsBySerberId } from "@/services/channelServices";
 import { getMembersByServerId } from "@/services/memberServices";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { ServerHeader } from "./server-header";
 
 interface Props {
     serverId: string
@@ -35,6 +36,7 @@ export const ServerSidebar = async ({ serverId }: Props) => {
         >
             <ServerHeader
                 server={server}
+                role={role}
             />
         </div>
     )

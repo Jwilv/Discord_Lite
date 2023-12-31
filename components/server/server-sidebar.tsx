@@ -1,4 +1,4 @@
-import { getChannelsBySerberId } from "@/services/channel";
+import { getChannelsBySerberId } from "@/services/channelServices";
 import { currentUser, redirectToSignIn } from "@clerk/nextjs";
 import { ChannelType } from "@prisma/client";
 

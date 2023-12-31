@@ -1,6 +1,8 @@
 import { db } from "@/lib/db"
 import { MemberRole } from "@prisma/client";
 import { v4 as uuidv4 } from 'uuid'
+import { async } from '../app/api/server/route';
+import { currentUser } from "@/lib/current-user";
 
 interface CreateServerProps {
     name: string,
@@ -40,4 +42,22 @@ export const getServersByUserId = async (profileId: string) => {
     });
 
     return servers
+}
+
+export const getServerById = async (serverId: string) => {
+
+    const profile = await currentUser()
+
+    const server = await db.server.findUnique({
+        where: {
+            id: serverId,
+            members: {
+                some: {
+                    profileId: profile?.id
+                }
+            }
+        }
+    });
+
+    return server
 }

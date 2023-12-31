@@ -70,6 +70,10 @@ export const getServerById = async (serverId: string) => {
                     profileId: profile?.id
                 }
             }
+        },
+        include: {
+            members: true,
+            channels: true,
         }
     });
 

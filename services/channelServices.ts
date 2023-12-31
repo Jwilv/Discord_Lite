@@ -1,5 +1,5 @@
+import { channelAdapter } from "@/adapters/channelAdapter";
 import { db } from "@/lib/db"
-import { ChannelType } from "@prisma/client";
 
 
 export const getChannelsBySerberId = async (serverId: string) => {
@@ -13,9 +13,5 @@ export const getChannelsBySerberId = async (serverId: string) => {
         }
     });
 
-    return {
-        textChannels: channels.filter((channel) => channel.type === ChannelType.TEXT),
-        audioChannels: channels.filter((channel) => channel.type === ChannelType.AUDIO),
-        videoChannels: channels.filter((channel) => channel.type === ChannelType.VIDEO),
-    }
+    return channelAdapter(channels)
 }

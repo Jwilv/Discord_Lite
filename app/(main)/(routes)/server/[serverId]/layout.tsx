@@ -1,6 +1,6 @@
 import { ServerSidebar } from "@/components/server/server-sidebar";
 import { currentUser } from "@/lib/current-user";
-import { getServerById } from "@/services/server";
+import { getServerById } from "@/services/serverServices";
 import { redirectToSignIn } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 

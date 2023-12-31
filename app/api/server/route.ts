@@ -1,5 +1,5 @@
 import { getProfileByUserId } from "@/services";
-import { createServer } from "@/services/server";
+import { createServer } from "@/services/serverServices";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 

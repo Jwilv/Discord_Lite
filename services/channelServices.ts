@@ -1,16 +1,21 @@
 import { db } from "@/lib/db"
+import { ChannelType } from "@prisma/client";
 
 
-export const getChannelsBySerberId = async (serverId : string) => {
+export const getChannelsBySerberId = async (serverId: string) => {
 
     const channels = await db.channel.findMany({
-        where:{
+        where: {
             serverId
         },
-        orderBy:{
+        orderBy: {
             createdAt: 'asc'
         }
     });
 
-    return channels
+    return {
+        textChannels: channels.filter((channel) => channel.type === ChannelType.TEXT),
+        audioChannels: channels.filter((channel) => channel.type === ChannelType.AUDIO),
+        videoChannels: channels.filter((channel) => channel.type === ChannelType.VIDEO),
+    }
 }

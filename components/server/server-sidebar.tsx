@@ -1,6 +1,7 @@
+import { removeMemberWithProfileId } from "@/lib/filters";
 import { getChannelsBySerberId } from "@/services/channelServices";
+import { getMembersByServerId } from "@/services/memberServices";
 import { currentUser, redirectToSignIn } from "@clerk/nextjs";
-import { ChannelType } from "@prisma/client";
 
 interface Props {
     serverId: string
@@ -13,9 +14,8 @@ export const ServerSidebar = async ({ serverId }: Props) => {
 
     const channels = await getChannelsBySerberId(serverId);
 
-    const textChannels = channels.filter((channel) => channel.type === ChannelType.TEXT);
-    const audioChannels = channels.filter((channel) => channel.type === ChannelType.AUDIO);
-    const videoChannels = channels.filter((channel) => channel.type === ChannelType.VIDEO);
+    const serverMembers = await getMembersByServerId(serverId);
+    const memebers = removeMemberWithProfileId(serverMembers, profile.id);
 
 
     return (

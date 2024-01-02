@@ -100,7 +100,7 @@ export const updateServeInviteById = async (serverId: string, profile: Profile) 
     return server
 }
 
-const existingServer = async (inviteCode: string, profileId: string) => {
+export const existingServer = async (inviteCode: string, profileId: string) => {
 
     const server = await db.server.findFirst({
         where: {
@@ -116,7 +116,7 @@ const existingServer = async (inviteCode: string, profileId: string) => {
     return server
 }
 
-const joinWithInviteCode = async (inviteCode: string, profile: Profile) => {
+export const joinWithInviteCode = async (inviteCode: string, profile: Profile) => {
     const server = await db.server.update({
         where: {
             inviteCode

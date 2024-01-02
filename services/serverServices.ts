@@ -84,3 +84,18 @@ export const getServerById = async (serverId: string) => {
 
     return server
 }
+
+export const updateServeInviteById = async (serverId: string, profile: Profile) => {
+
+    const server = await db.server.update({
+        where: {
+            id: serverId,
+            profileId: profile.id
+        },
+        data: {
+            inviteCode: uuidv4(),
+        },
+    })
+
+    return server
+}

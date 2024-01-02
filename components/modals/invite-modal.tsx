@@ -16,11 +16,12 @@ import { Button } from "@/components/ui/button";
 import { Check, Copy, RefreshCcw } from "lucide-react";
 import { useOrigin } from "@/hooks/use-origin";
 import { useState } from "react";
+import axios from "axios";
 
 
 export const InviteModal = () => {
 
-    const { type, isOpen, onClose, data } = useModal();
+    const { type, isOpen, onClose, data, onOpen } = useModal();
     const origin = useOrigin();
 
     const inviteUrl = `${origin}/invite/${data.server?.inviteCode}`
@@ -35,6 +36,19 @@ export const InviteModal = () => {
         setTimeout(() => {
             setCopied(false);
         }, 1000);
+    }
+
+    const onNew = async () => {
+        try {
+            setIsLoading(true);
+            const response = await axios.patch(`/api/server/${data.server?.id}/invite-code`)
+
+            onOpen('invite', { server: response.data });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const isModalOpen = isOpen && type === 'invite';
@@ -54,11 +68,13 @@ export const InviteModal = () => {
                     </Label>
                     <div className="flex items-center mt-2 gap-x-2">
                         <Input
+                            disabled={isLoading}
                             className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black
                             focus-visible:ring-offset-0"
                             value={inviteUrl}
                         />
                         <Button
+                            disabled={isLoading}
                             size='icon'
                             onClick={onCopy}
                         >
@@ -66,12 +82,15 @@ export const InviteModal = () => {
                                 copied
                                     ? (
                                         <Check className="w-4 h-4" />
-                                        ) : (
+                                    ) : (
                                         <Copy className="w-4 h-4" />
                                     )
-                            }                        </Button>
+                            }
+                        </Button>
                     </div>
                     <Button
+                        onClick={onNew}
+                        disabled={isLoading}
                         variant='link'
                         size='sm'
                         className="text-xs text-zinc-500 mt-4"

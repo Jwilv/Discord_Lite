@@ -115,3 +115,25 @@ const existingServer = async (inviteCode: string, profileId: string) => {
 
     return server
 }
+
+const joinWithInviteCode = async (inviteCode: string, profile: Profile) => {
+    const server = await db.server.update({
+        where: {
+            inviteCode
+        },
+        data: {
+            members: {
+                create: [
+                    {
+                        profileId: profile.id,
+                        role: MemberRole.GUEST,
+                        name: profile.name,
+                        imageUrl: profile.imageUrl,
+                    }
+                ]
+            }
+        }
+    });
+
+    return server
+}

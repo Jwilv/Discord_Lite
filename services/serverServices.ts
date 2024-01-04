@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { MemberRole, Profile } from "@prisma/client";
 import { v4 as uuidv4 } from 'uuid'
 import { currentUser } from "@/lib/current-user";
+import { serialize } from 'v8';
 
 interface CreateServerProps {
     name: string,
@@ -133,6 +134,27 @@ export const joinWithInviteCode = async (inviteCode: string, profile: Profile) =
                 ]
             }
         }
+    });
+
+    return server
+}
+
+interface UpdateSettingsProps {
+    name: string,
+    imageUrl: string
+}
+
+export const updateServerSettings = async (
+    serverId: string,
+    profileId: string,
+    data: UpdateSettingsProps
+) => {
+    const server = await db.server.update({
+        where: {
+            id: serverId,
+            profileId,
+        },
+        data: { ...data }
     });
 
     return server

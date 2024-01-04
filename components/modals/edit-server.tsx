@@ -26,6 +26,7 @@ import { Title, Description } from '../modal';
 import { FieldImage, FieldInput } from '../Field';
 
 import { useModal } from '@/hooks/use-modal-store';
+import { useEffect } from "react";
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -39,7 +40,8 @@ const formSchema = z.object({
 
 export const EditServer = () => {
 
-    const { isOpen, onClose, type } = useModal();
+    const { isOpen, onClose, type, data } = useModal();
+    const { server } = data
     const isModalOpen = isOpen && type === 'editServer';
 
     const router = useRouter();
@@ -52,6 +54,13 @@ export const EditServer = () => {
         }
     });
 
+    useEffect(() => {
+        if (server) {
+            form.setValue('name', server.name)
+            form.setValue('imageUrl', server.imageUrl)
+        }
+    }, [form, server])
+
     const isLoading = form.formState.isSubmitting;
 
     const handleClose = () => {
@@ -60,7 +69,7 @@ export const EditServer = () => {
     }
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        await axios.post('/api/server', values)
+        await axios.post(`/api/server/${server?.id}`, values)
 
         form.reset();
         router.refresh();
@@ -109,7 +118,7 @@ export const EditServer = () => {
                                 disabled={isLoading}
                                 variant='primary'
                             >
-                                Create
+                                Save
                             </Button>
                         </DialogFooter>
                     </form>

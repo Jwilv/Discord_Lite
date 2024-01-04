@@ -11,10 +11,12 @@ export const getProfileByUserId = async (id: string) => {
 
 export const createNewProfile = async (user: User) => {
 
+    const name = user.emailAddresses[0].emailAddress.split('@')[0];
+
     const newProfile = await db.profile.create({
         data: {
             userId: user.id,
-            name: `${user.firstName} ${user.lastName}`,
+            name: user.firstName ? `${user.firstName} ${user.lastName}` : `${name}`,
             imageUrl: user.imageUrl,
             email: user.emailAddresses[0].emailAddress
         }

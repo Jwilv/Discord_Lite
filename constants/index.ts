@@ -8,3 +8,8 @@ export const inviteModal = {
     title: 'Invite your friends',
     description: 'Server invite link',
 }
+
+export const manageModal = {
+    title: 'Manage members',
+    description: 'Edit your server settings',
+}

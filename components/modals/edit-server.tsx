@@ -69,7 +69,7 @@ export const EditServer = () => {
     }
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        await axios.post(`/api/server/${server?.id}`, values)
+        await axios.patch(`/api/server/${server?.id}`, values)
 
         form.reset();
         router.refresh();

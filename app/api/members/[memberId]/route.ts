@@ -1,6 +1,6 @@
 import { currentUser } from "@/lib/current-user";
 import { db } from "@/lib/db";
-import { updateRolMemberServer } from "@/services/memberServices";
+import { deleteMemberFromServer, updateRolMemberServer } from "@/services/memberServices";
 import { NextResponse } from "next/server";
 
 interface Props {
@@ -19,7 +19,13 @@ export async function DELETE(req: Request, { params }: Props) {
         if (!serverId) return new NextResponse("Server ID Missing", { status: 400 });
         if (!params.memberId) return new NextResponse("Member ID Missing", { status: 400 });
 
+        const server = await deleteMemberFromServer({
+            memberId: params.memberId,
+            profileId: profile.id,
+            serverId,
+        });
 
+        return NextResponse.json(server);
 
     } catch (error) {
         console.log("[MEMBERS_ID_DELETE]", error);

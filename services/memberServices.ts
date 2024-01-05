@@ -49,7 +49,6 @@ export const updateRolMemberServer = async ({ serverId, profileId, memberId, rol
 interface deleteMemberProps {
     serverId: string
     memberId: string
-    role: MemberRole,
     profileId: string,
 }
 

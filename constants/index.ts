@@ -13,3 +13,7 @@ export const manageModal = {
     title: 'Manage members',
     description: 'Edit your server settings',
 }
+
+export const createChannel = {
+    title : 'Create channel',
+}

@@ -62,6 +62,28 @@ export const MembersModal = () => {
 
     const isModalOpen = isOpen && type === 'manageMembers';
 
+    const onKick = async (memberId: string) => {
+        try {
+            setloadingId(memberId);
+
+            const url = qs.stringifyUrl({
+                url: `api/members/${memberId}`,
+                query: {
+                    serverId: server?.id,
+                }
+            });
+
+            const response = await axios.delete(url);
+
+            onOpen('manageMembers', { server: response.data })
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloadingId('');
+        }
+    }
+
     const onRoleChange = async (memberId: string, role: MemberRole) => {
         try {
             setloadingId(memberId);
@@ -70,7 +92,6 @@ export const MembersModal = () => {
                 url: `/api/members/${memberId}`,
                 query: {
                     serverId: server?.id,
-                    memberId,
                 }
             })
 
@@ -147,7 +168,7 @@ export const MembersModal = () => {
                                                                 onClick={() => onRoleChange(member.id, 'MODERATOR')}
                                                             >
                                                                 <ShieldCheck className="h-4 w-4 mr-2" />
-                                                                Guest
+                                                                Moderator
                                                                 {
                                                                     member.role === 'MODERATOR'
                                                                     &&
@@ -158,7 +179,9 @@ export const MembersModal = () => {
                                                     </DropdownMenuPortal>
                                                 </DropdownMenuSub>
                                                 <DropdownMenuSeparator />
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() => onKick(member.id)}
+                                                >
                                                     <Gavel className="h-4 w-4 mr-2" />
                                                     Kick
                                                 </DropdownMenuItem>

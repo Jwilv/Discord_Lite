@@ -19,7 +19,7 @@ interface UpdateRolProps {
     profileId: string,
 }
 
-export const updateRolMemberServer = async ({ serverId, profileId, memberId, role} : UpdateRolProps) => {
+export const updateRolMemberServer = async ({ serverId, profileId, memberId, role }: UpdateRolProps) => {
     const server = await db.server.update({
         where: {
             id: serverId,
@@ -37,6 +37,40 @@ export const updateRolMemberServer = async ({ serverId, profileId, memberId, rol
                     data: { role }
                 }
             }
+        },
+        include: {
+            members: true,
+        }
+    });
+
+    return server
+}
+
+interface deleteMemberProps {
+    serverId: string
+    memberId: string
+    role: MemberRole,
+    profileId: string,
+}
+
+export const deleteMemberFromServer = async ({ serverId, profileId, memberId }: deleteMemberProps) => {
+    const server = await db.server.update({
+        where: {
+            id: serverId,
+            profileId
+        },
+        data: {
+            members: {
+                delete: {
+                    id: memberId,
+                    profileId: {
+                        not: profileId
+                    }
+                }
+            }
+        },
+        include: {
+            members: true
         }
     });
 

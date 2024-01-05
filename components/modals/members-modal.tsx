@@ -67,7 +67,7 @@ export const MembersModal = () => {
             setloadingId(memberId);
 
             const url = qs.stringifyUrl({
-                url: `api/members/${memberId}`,
+                url: `/api/members/${memberId}`,
                 query: {
                     serverId: server?.id,
                 }
@@ -75,6 +75,7 @@ export const MembersModal = () => {
 
             const response = await axios.delete(url);
 
+            router.refresh();
             onOpen('manageMembers', { server: response.data })
 
         } catch (error) {

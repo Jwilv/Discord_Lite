@@ -1,5 +1,7 @@
+import { currentUser } from "@/lib/current-user";
+import { db } from "@/lib/db";
 import { createChannel } from "@/services";
-import { currentUser } from "@clerk/nextjs";
+import { MemberRole } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {

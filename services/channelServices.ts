@@ -1,7 +1,6 @@
 import { channelAdapter } from "@/adapters/channelAdapter";
 import { db } from "@/lib/db"
 import { ChannelType, MemberRole } from "@prisma/client";
-import { v4 as uuidv4 } from 'uuid'
 
 
 export const getChannelsBySerberId = async (serverId: string) => {

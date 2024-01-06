@@ -22,3 +22,8 @@ export const LeaveModalText = {
     title : 'Leave Server',
     description :'Are you sure you want to leave',
 }
+
+export const DeleteServerModalText = {
+    title : 'Delete Server',
+    description :'Are you sure you want to do this?',
+}

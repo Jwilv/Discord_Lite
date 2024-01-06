@@ -11,6 +11,8 @@ import { ScrollArea } from "../ui/scroll-area";
 import { ServerSearch } from "./server-search";
 import { ChannelType, MemberRole } from "@prisma/client";
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
+import { Separator } from "../ui/separator";
+import { ServerSection } from "./server-section";
 
 interface Props {
     serverId: string
@@ -103,6 +105,21 @@ export const ServerSidebar = async ({ serverId }: Props) => {
                         },
                     ]} />
                 </div>
+
+                <Separator className="bg-zinc-200 dark:bg-zinc-700 rounende-md my-2" />
+                {
+                    !!channels.textChannels.length && (
+                        <div className="mb-2">
+                            <ServerSection 
+                            label="Text Channels"
+                            sectionType={"channels"}
+                            channelType={ChannelType.TEXT}
+                            role={role}
+                            />
+                        </div>
+                    )
+                }
+
             </ScrollArea>
         </div>
     )

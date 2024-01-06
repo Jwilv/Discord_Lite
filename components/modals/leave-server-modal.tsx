@@ -31,16 +31,13 @@ export const LeaveServerModal = () => {
     const onLeave = async () => {
         try {
             setIsLoading(true);
-
             await axios.patch(`/api/server/${data.server?.id}/leave`);
             onClose();
             router.refresh();
-            router.push('/');
         } catch (error) {
             console.log(error);
         } finally {
             setIsLoading(false);
-
         }
 
     }

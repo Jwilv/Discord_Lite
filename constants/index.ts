@@ -17,3 +17,8 @@ export const manageModal = {
 export const createChannel = {
     title : 'Create channel',
 }
+
+export const LeaveModalText = {
+    title : 'Leave Server',
+    description :'Are you sure you want to leave',
+}

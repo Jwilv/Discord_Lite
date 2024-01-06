@@ -75,3 +75,34 @@ export const deleteMemberFromServer = async ({ serverId, profileId, memberId }: 
 
     return server
 }
+
+
+interface LeaveMemberProps {
+    serverId: string
+    profileId: string
+}
+
+export const leaveMemberServer = async ({ serverId, profileId }: LeaveMemberProps) => {
+    const server = await db.server.update({
+        where: {
+            id: serverId,
+            profileId: {
+                not: profileId
+            },
+            members: {
+                some: {
+                    profileId
+                }
+            }
+        },
+        data: {
+            members: {
+                deleteMany: {
+                    profileId
+                }
+            }
+        }
+    });
+
+    return server
+}

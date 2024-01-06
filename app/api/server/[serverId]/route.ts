@@ -25,3 +25,19 @@ export async function PATCH(req: Request, { params }: Params) {
         return new NextResponse('Internal Error', { status: 500 });
     }
 }
+
+export async function DELETE(req: Request, { params }: Params) {
+    try {
+        const profile = await currentUser();
+        const { serverId } = params
+
+        if (!profile) return new NextResponse('Unauthorized', { status: 401 });
+        if(!serverId) return new NextResponse('Server ID Missing', { status: 400 });
+
+        
+
+    } catch (error) {
+        console.log('[SERVER_ID_DELETE]', error);
+        return new NextResponse('Internal Error', { status: 500 });
+    }
+}

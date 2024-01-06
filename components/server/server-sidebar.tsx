@@ -7,9 +7,25 @@ import { getMembersByServerId } from "@/services/memberServices";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { ServerHeader } from "./server-header";
+import { ScrollArea } from "../ui/scroll-area";
+import { ServerSearch } from "./server-search";
+import { ChannelType, MemberRole } from "@prisma/client";
+import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
 
 interface Props {
     serverId: string
+}
+
+const iconMap = {
+    [ChannelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
+    [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
+    [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
+}
+
+const roleIconMap = {
+    [MemberRole.GUEST]: null,
+    [MemberRole.MODERATOR]: <ShieldCheck className="mr-2 h-4 w-4 text-indigo-500" />,
+    [MemberRole.ADMIN]: <ShieldAlert className="mr-2 h-4 w-4 text-indigo-500" />,
 }
 
 export const ServerSidebar = async ({ serverId }: Props) => {
@@ -25,7 +41,7 @@ export const ServerSidebar = async ({ serverId }: Props) => {
 
     const role = findRole(server.members, profile.id);
 
-    const channels =  channelAdapter(server.channels);
+    const channels = channelAdapter(server.channels);
 
     const memebers = removeMemberWithProfileId(server.members, profile.id);
 
@@ -38,6 +54,56 @@ export const ServerSidebar = async ({ serverId }: Props) => {
                 server={server}
                 role={role}
             />
+            <ScrollArea className="flex-1 px-3">
+                <div className="m-2">
+                    <ServerSearch data={[
+                        {
+                            label: 'Text Channels',
+                            type: 'channel',
+                            data: channels.textChannels.map((channel) => {
+                                return {
+                                    icon: iconMap[channel.type],
+                                    name: channel.name,
+                                    id: channel.id
+                                }
+                            }),
+                        },
+                        {
+                            label: 'Voice Channels',
+                            type: 'channel',
+                            data: channels.audioChannels.map((channel) => {
+                                return {
+                                    icon: iconMap[channel.type],
+                                    name: channel.name,
+                                    id: channel.id
+                                }
+                            }),
+                        },
+                        {
+                            label: 'Video Channels',
+                            type: 'channel',
+                            data: channels.videoChannels.map((channel) => {
+                                return {
+                                    icon: iconMap[channel.type],
+                                    name: channel.name,
+                                    id: channel.id
+                                }
+                            }),
+                        },
+                        {
+                            label: 'Members',
+                            type: 'member',
+                            data: memebers.map((member) => {
+                                return {
+                                    icon: roleIconMap[member.role],
+                                    name: member.name,
+                                    id: member.id
+                                }
+                            }),
+                        },
+                    ]} />
+                </div>
+            </ScrollArea>
         </div>
     )
 }

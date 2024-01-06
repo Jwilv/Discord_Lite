@@ -1,5 +1,5 @@
 import { currentUser } from "@/lib/current-user";
-import { updateServerSettings } from "@/services";
+import { deleteServer, updateServerSettings } from "@/services";
 import { NextResponse } from "next/server";
 
 interface Params {
@@ -34,7 +34,9 @@ export async function DELETE(req: Request, { params }: Params) {
         if (!profile) return new NextResponse('Unauthorized', { status: 401 });
         if(!serverId) return new NextResponse('Server ID Missing', { status: 400 });
 
-        
+        const server = await deleteServer(serverId, profile.id);
+
+        return NextResponse.json(server);
 
     } catch (error) {
         console.log('[SERVER_ID_DELETE]', error);

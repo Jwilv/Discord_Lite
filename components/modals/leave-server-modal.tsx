@@ -68,7 +68,7 @@ export const LeaveServerModal = () => {
                         </Button>
                         <Button
                             disabled={isLoading}
-                            onClick={() => { }}
+                            onClick={onLeave}
                             variant='primary'
                         >
                             Confirm

@@ -159,3 +159,14 @@ export const updateServerSettings = async (
 
     return server
 }
+
+export const deleteServer = async (serverId: string, profileId: string) => {
+    const server = await db.server.delete({
+        where: {
+            id: serverId,
+            profileId
+        }
+    });
+
+    return server
+}

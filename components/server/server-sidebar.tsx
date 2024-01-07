@@ -13,6 +13,7 @@ import { ChannelType, MemberRole } from "@prisma/client";
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { ServerSection } from "./server-section";
+import { ServerChannel } from "./server-channel";
 
 interface Props {
     serverId: string
@@ -49,9 +50,7 @@ export const ServerSidebar = async ({ serverId }: Props) => {
 
 
     return (
-        <div
-            className=" flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]"
-        >
+        <div className=" flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
             <ServerHeader
                 server={server}
                 role={role}
@@ -110,12 +109,22 @@ export const ServerSidebar = async ({ serverId }: Props) => {
                 {
                     !!channels.textChannels.length && (
                         <div className="mb-2">
-                            <ServerSection 
-                            label="Text Channels"
-                            sectionType={"channels"}
-                            channelType={ChannelType.TEXT}
-                            role={role}
+                            <ServerSection
+                                label="Text Channels"
+                                sectionType={"channels"}
+                                channelType={ChannelType.TEXT}
+                                role={role}
                             />
+                            {
+                                channels.textChannels.map((channel) => (
+                                    <ServerChannel
+                                        key={channel.id}
+                                        channel={channel}
+                                        server={server}
+                                        role={role}
+                                    />
+                                ))
+                            }
                         </div>
                     )
                 }

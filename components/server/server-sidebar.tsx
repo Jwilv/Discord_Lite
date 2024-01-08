@@ -128,6 +128,50 @@ export const ServerSidebar = async ({ serverId }: Props) => {
                         </div>
                     )
                 }
+                {
+                    !!channels.audioChannels.length && (
+                        <div className="mb-2">
+                            <ServerSection
+                                label="Voice Channels"
+                                sectionType={"channels"}
+                                channelType={ChannelType.AUDIO}
+                                role={role}
+                            />
+                            {
+                                channels.audioChannels.map((channel) => (
+                                    <ServerChannel
+                                        key={channel.id}
+                                        channel={channel}
+                                        server={server}
+                                        role={role}
+                                    />
+                                ))
+                            }
+                        </div>
+                    )
+                }
+                {
+                    !!channels.videoChannels.length && (
+                        <div className="mb-2">
+                            <ServerSection
+                                label="Video Channels"
+                                sectionType={"channels"}
+                                channelType={ChannelType.VIDEO}
+                                role={role}
+                            />
+                            {
+                                channels.videoChannels.map((channel) => (
+                                    <ServerChannel
+                                        key={channel.id}
+                                        channel={channel}
+                                        server={server}
+                                        role={role}
+                                    />
+                                ))
+                            }
+                        </div>
+                    )
+                }
 
             </ScrollArea>
         </div>

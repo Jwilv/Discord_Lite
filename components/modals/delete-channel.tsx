@@ -8,6 +8,7 @@ import {
     DialogHeader,
 } from "@/components/ui/dialog"
 
+import qs from 'query-string';
 
 import { Title } from "@/components/modal";
 import { DeleteServerModalText } from "@/constants";
@@ -21,6 +22,7 @@ import { useRouter } from 'next/navigation';
 export const DeleteChannelModal = () => {
 
     const { type, isOpen, onClose, data } = useModal();
+    const { server, channel } = data
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -31,9 +33,19 @@ export const DeleteChannelModal = () => {
     const onLeave = async () => {
         try {
             setIsLoading(true);
-            await axios.delete(`/api/server/${data.server?.id}`);
+
+            const ulr = qs.stringifyUrl({
+                url: `/api/channels/${channel?.id}}`,
+                query: {
+                    serverId: server?.id
+                }
+            })
+
+            await axios.delete(ulr);
+
             onClose();
             router.refresh();
+            router.push(`/api/server/${server?.id}`);
         } catch (error) {
             console.log(error);
         } finally {
@@ -51,8 +63,8 @@ export const DeleteChannelModal = () => {
                     <Title title={DeleteServerModalText.title} />
                 </DialogHeader>
                 <DialogDescription className="text-center text-zinc-500">
-                    {DeleteServerModalText.description}<br/>
-                    &nbsp;<span className="font-semibold text-rose-500">{data.server?.name}</span> will be permanenty deleted.
+                    {DeleteServerModalText.description}<br />
+                    &nbsp;<span className="font-semibold text-rose-500">{channel?.name}</span> will be permanenty deleted.
                 </DialogDescription>
 
                 <DialogFooter className="gb-gray-100 px-6 py-4">

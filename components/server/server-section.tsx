@@ -42,7 +42,7 @@ export const ServerSection = ({
             }
             {
                 role === MemberRole.ADMIN && sectionType === 'members' && (
-                    <ActionTooltip label="Create Channel" side="top">
+                    <ActionTooltip label="Manage Members" side="top">
                         <button
                             onClick={() => onOpen('manageMembers', { server })}
                             className="text-zinc-500 hover-text-zinc-600 "

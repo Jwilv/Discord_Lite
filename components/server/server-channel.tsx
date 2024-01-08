@@ -6,6 +6,7 @@ import { Icon } from "@radix-ui/react-select";
 import { Edit, Hash, Mic, Trash, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { ActionTooltip } from "../action-tooltip";
+import { useModal } from '../../hooks/use-modal-store';
 
 interface ServerChannelProps {
     server: Server;
@@ -23,6 +24,8 @@ export const ServerChannel = ({ server, channel, role }: ServerChannelProps) => 
 
     const route = useRouter();
     const params = useParams();
+
+    const { onOpen } = useModal();
 
     const Icon = iconMap[channel.type];
     return (
@@ -43,21 +46,22 @@ export const ServerChannel = ({ server, channel, role }: ServerChannelProps) => 
                 {channel.name}
             </p>
             {channel.name !== 'general' && role !== MemberRole.GUEST && (
-                    <div className="ml-auto flex items-center gap-x-2">
-                        <ActionTooltip label="Edit">
-                            <Edit
-                                className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600
+                <div className="ml-auto flex items-center gap-x-2">
+                    <ActionTooltip label="Edit">
+                        <Edit
+                            className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600
                                 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
-                            />
-                        </ActionTooltip>
-                        <ActionTooltip label="Edit">
-                            <Trash
-                                className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600
+                        />
+                    </ActionTooltip>
+                    <ActionTooltip label="Edit">
+                        <Trash
+                            onClick={() => onOpen('deleteChannel', { server, channel })}
+                            className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600
                                 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
-                            />
-                        </ActionTooltip>
-                    </div>
-                )}
+                        />
+                    </ActionTooltip>
+                </div>
+            )}
         </button>
     )
 }

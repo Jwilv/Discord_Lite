@@ -59,6 +59,7 @@ interface deleteProps {
 }
 
 export const deleteChannel = async ({ serverId, channelId, profileId }: deleteProps) => {
+    
     const server = await db.server.update({
         where: {
             id: serverId,
@@ -66,7 +67,7 @@ export const deleteChannel = async ({ serverId, channelId, profileId }: deletePr
                 some: {
                     profileId,
                     role: {
-                        in: [MemberRole.MODERATOR, MemberRole.ADMIN]
+                        in: [MemberRole.ADMIN, MemberRole.MODERATOR]
                     }
                 }
             }
@@ -74,10 +75,7 @@ export const deleteChannel = async ({ serverId, channelId, profileId }: deletePr
         data: {
             channels: {
                 delete: {
-                    id: channelId,
-                    name:{
-                        not: 'general'
-                    }
+                    id: channelId
                 }
             }
         }

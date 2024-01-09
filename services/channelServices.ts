@@ -128,3 +128,26 @@ export const updateChannel = async ({
 
     return server
 }
+
+export const getGeneralChannel = async (serverId: string, profileId: string) => {
+    const server = await db.server.findUnique({
+        where: {
+            id: serverId,
+            members: {
+                some: {
+                    profileId,
+                }
+            }
+        },
+        include: {
+            channels: {
+                where: {
+                    name: 'general',
+                    type: ChannelType.TEXT
+                }
+            }
+        }
+    });
+
+    return server
+}

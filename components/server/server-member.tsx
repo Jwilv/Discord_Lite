@@ -26,7 +26,7 @@ export const ServerMember = ({ server, member }: ServerMemberProps) => {
     const router = useRouter();
 
     const handleClick = () => {
-        router.push(`/server/${server.id}/conversations/${member.id}`);
+        router.push(`/server/${server.id}/conversation/${member.id}`);
     }
 
     return (

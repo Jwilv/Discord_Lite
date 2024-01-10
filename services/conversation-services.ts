@@ -40,3 +40,15 @@ export const createConversation = async (memberOneId: string, memberTwoId: strin
         return null
     }
 }
+
+export const getOrCreateConversation = async (memberOneId: string, memberTwoId: string) => {
+
+    let conversation = await findConversation(memberOneId, memberTwoId) || await
+        createConversation(memberTwoId, memberOneId);
+
+    if (!conversation) {
+        conversation = await createConversation(memberOneId, memberTwoId);
+    }
+
+    return conversation
+}

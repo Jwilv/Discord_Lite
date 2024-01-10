@@ -3,7 +3,7 @@ import { db } from "@/lib/db"
 import { ChannelType, MemberRole } from "@prisma/client";
 
 
-export const getChannelsBySerberId = async (serverId: string) => {
+export const getChannelsByServerId = async (serverId: string) => {
 
     const channels = await db.channel.findMany({
         where: {
@@ -16,6 +16,16 @@ export const getChannelsBySerberId = async (serverId: string) => {
 
     return channelAdapter(channels)
 }
+
+export const getChannelById = async (id : string) => {
+    const channel = await db.channel.findUnique({
+        where: {
+            id
+        }
+    });
+
+    return channel
+ }
 
 interface CreateChannelProps {
     serverId: string

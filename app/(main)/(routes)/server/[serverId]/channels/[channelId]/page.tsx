@@ -1,6 +1,15 @@
-import React from 'react'
+import { currentUser } from "@/lib/current-user";
 
-const ChannelIdPage = () => {
+interface Props {
+  params: { serverId: string, channelId: string }
+}
+
+const ChannelIdPage = async ({ params }: Props) => {
+
+  const profile = await currentUser();
+
+  const channel
+
   return (
     <div>ChannelIdPage</div>
   )

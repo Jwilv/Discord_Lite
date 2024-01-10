@@ -2,8 +2,6 @@ import { channelAdapter } from "@/adapters/channelAdapter";
 import { currentUser } from "@/lib/current-user";
 import { findRole, isMemberServer, removeMemberWithProfileId } from "@/lib/filters";
 import { getServerById } from "@/services";
-import { getChannelsBySerberId } from "@/services/channelServices";
-import { getMembersByServerId } from "@/services/memberServices";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { ServerHeader } from "./server-header";

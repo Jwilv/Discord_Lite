@@ -12,6 +12,16 @@ export const getMembersByServerId = async (serverId: string) => {
     return members
 }
 
+export const findMemberByServerAndProfileId = async (serverId: string, profileId: string) => {
+    const member = await db.member.findFirst({
+        where: {
+            serverId,
+            profileId
+        }
+    });
+    return member
+}
+
 interface UpdateRolProps {
     serverId: string
     memberId: string

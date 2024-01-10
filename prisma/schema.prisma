@@ -47,18 +47,19 @@ enum MemberRole {
 }
 
 model Member {
-  id   String     @id @default(uuid())
-  role MemberRole @default(GUEST)
+  id       String     @id @default(uuid())
+  role     MemberRole @default(GUEST)
   name     String
-  imageUrl String @db.Text 
+  imageUrl String     @db.Text
 
   profileId String
-  
+
   serverId String
-  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  server   Server    @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  messages Message[]
 
   @@index([serverId])
-
 }
 
 enum ChannelType {
@@ -78,8 +79,29 @@ model Channel {
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   serverId String
-  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  server   Server    @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  messages  Message[]
 
   @@index([profileId])
   @@index([serverId])
+}
+
+model Message {
+  id      String @id @default(uuid())
+  content String @db.Text
+
+  fileUrl String? @db.Text
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  channelId String
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@index([channelId])
+  @@index([memberId])
 }

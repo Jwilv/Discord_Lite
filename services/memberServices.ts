@@ -106,3 +106,14 @@ export const leaveMemberServer = async ({ serverId, profileId }: LeaveMemberProp
 
     return server
 }
+
+export const getMember = async (serverId : string, profileId: string) => {
+    const member = await db.member.findFirst({
+        where: {
+            serverId,
+            profileId
+        }
+    });
+
+    return member
+}

@@ -30,8 +30,6 @@ export const SocketProvider = ({
     const [socket, setSocket] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
 
-    const { Provider } = SocketContext
-
     useEffect(() => {
         const socketInstance = new (ClientIO as any)(process.env.NEXT_PUBLIC_SITE_URL!, {
             path: "/api/socket/io",
@@ -54,8 +52,8 @@ export const SocketProvider = ({
     }, []);
 
     return (
-        <Provider value={{ socket, isConnected }}>
+        <SocketContext.Provider value={{ socket, isConnected }}>
             {children}
-        </Provider>
+        </SocketContext.Provider>
     )
 }

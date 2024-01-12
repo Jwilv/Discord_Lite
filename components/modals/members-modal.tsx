@@ -24,7 +24,6 @@ import {
     ShieldQuestion
 } from "lucide-react";
 import { manageModal } from "@/constants";
-import { ServerWithMembersWhithProfiles } from "@/types";
 import { ScrollArea } from "../ui/scroll-area";
 import { UserAvatar } from "../user-avatar";
 import { useState } from "react";
@@ -39,9 +38,10 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
 } from "../ui/dropdown-menu";
-import { MemberRole } from "@prisma/client";
+import { Member, MemberRole } from "@prisma/client";
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { ServerWithMembersWithProfiles } from '@/types';
 
 
 
@@ -54,7 +54,7 @@ export const roleIconMap = {
 export const MembersModal = () => {
 
     const { type, isOpen, onClose, data, onOpen } = useModal();
-    const { server } = data as { server: ServerWithMembersWhithProfiles }
+    const { server } = data as { server: ServerWithMembersWithProfiles }
 
     const router = useRouter();
 
@@ -119,7 +119,7 @@ export const MembersModal = () => {
                     </DialogDescription>
                 </DialogHeader>
                 <ScrollArea className="mt-8 max-h-[420px] pr-6">
-                    {server?.members?.map((member) => (
+                    {server?.members?.map((member : Member) => (
                         <div
                             key={member.id}
                             className="flex items-center gap-x-2 mb-6"

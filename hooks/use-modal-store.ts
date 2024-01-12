@@ -3,12 +3,14 @@ import { create } from 'zustand';
 
 export type ModalType = 'createServer' | 'invite' | 'editServer'
     | 'manageMembers' | 'createChannel' | 'leaveServer' | 'deleteServer'
-    | 'deleteChannel' | 'editChannel';
+    | 'deleteChannel' | 'editChannel' | 'messageFile';
 
 interface ModalData {
     server?: Server;
     channelType?: ChannelType;
     channel?: Channel;
+    apiUrl?: string;
+    query?: Record<string, any>;
 }
 
 interface ModalStore {

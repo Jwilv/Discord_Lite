@@ -6,8 +6,8 @@ import { useChatQuery } from "@/hooks/use-chat-query";
 import { RedirectToUserProfile } from "@clerk/nextjs";
 import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment } from "react";
-import ChatItem from "./chat-item";
 import { format } from 'date-fns'
+import { ChatItem } from "./chat-item";
 
 
 interface props {
@@ -92,16 +92,16 @@ const ChatMessages = ({
                             group.items.map((message: MessageWithMember) => (
                                 <ChatItem
                                     key={message.id}
+                                    id={message.id}
                                     currentMember={member}
-                                    timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
-                                    isUpdate={message.updateAt !== message.createdAt}
-                                    socketUrl={socketUrl}
-                                    socketQuery={socketQuery}
                                     member={message.member}
                                     content={message.content}
-                                    deleted={message.deleted}
                                     fileUrl={message.fileUrl}
-                                    id={message.id}
+                                    deleted={message.deleted}
+                                    timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
+                                    isUpdated={message.updateAt !== message.createdAt}
+                                    socketUrl={socketUrl}
+                                    socketQuery={socketQuery}
                                 />
                             ))
                         }

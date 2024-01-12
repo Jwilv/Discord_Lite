@@ -27,7 +27,7 @@ import { useModal } from "@/hooks/use-modal-store";
 interface ChatItemProps {
     id: string;
     content: string;
-    member: Member
+    member: Member;
     timestamp: string;
     fileUrl: string | null;
     deleted: boolean;
@@ -232,10 +232,10 @@ export const ChatItem = ({
                     )}
                     <ActionTooltip label="Delete">
                         <Trash
-                            //   onClick={() => onOpen("deleteMessage", { 
-                            //     apiUrl: `${socketUrl}/${id}`,
-                            //     query: socketQuery,
-                            //    })}
+                            onClick={() => onOpen("deleteMessage", {
+                                apiUrl: `${socketUrl}/${id}`,
+                                query: socketQuery,
+                            })}
                             className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
                         />
                     </ActionTooltip>

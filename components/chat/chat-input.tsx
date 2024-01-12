@@ -5,7 +5,8 @@ import axios from "axios";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, Smile } from "lucide-react";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -16,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
 import EmojiPicker from "../emoji-picker";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
 
 interface ChatInputProps {
   apiUrl: string;
@@ -35,6 +36,8 @@ export const ChatInput = ({
   name,
   type,
 }: ChatInputProps) => {
+  const { onOpen } = useModal();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,14 +46,17 @@ export const ChatInput = ({
     }
   });
 
-  const router = useRouter();
-
-  const isLoading = form.formState.isSubmitting;
-
-  const { onOpen } = useModal();
+  const [isLoading, setIsLoading] = useState(form.formState.isSubmitting)
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
+    try {  
+      if (isLoading){
+        form.reset();
+        return
+      }
+      
+      setIsLoading(true);
+      
       const url = qs.stringifyUrl({
         url: apiUrl,
         query,
@@ -60,9 +66,11 @@ export const ChatInput = ({
 
       form.reset();
       router.refresh();
-
     } catch (error) {
       console.log(error);
+    }
+    finally {
+      setIsLoading(false);
     }
   }
 
@@ -78,7 +86,7 @@ export const ChatInput = ({
                 <div className="relative p-4 pb-6">
                   <button
                     type="button"
-                    onClick={() => onOpen('messageFile', { query, apiUrl })}
+                    onClick={() => onOpen("messageFile", { apiUrl, query })}
                     className="absolute top-7 left-8 h-[24px] w-[24px] bg-zinc-500 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
                   >
                     <Plus className="text-white dark:text-[#313338]" />

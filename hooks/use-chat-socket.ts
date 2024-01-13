@@ -11,9 +11,7 @@ type ChatSocketProps = {
 }
 
 type MessageWithMemberWithProfile = Message & {
-    member: Member & {
-        profile: Profile;
-    }
+    member: Member
 }
 
 //dios en ti confio 

@@ -1,8 +1,8 @@
-import { useSocket } from "@/components/providers/socket-provider";
-import { Member, Message } from "@prisma/client";
-import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Member, Message, Profile } from "@prisma/client";
 
+import { useSocket } from "@/components/providers/socket-provider";
 
 type ChatSocketProps = {
     addKey: string;
@@ -10,19 +10,27 @@ type ChatSocketProps = {
     queryKey: string;
 }
 
-type MessageWithMember = Message & {
-    member: Member;
+type MessageWithMemberWithProfile = Message & {
+    member: Member & {
+        profile: Profile;
+    }
 }
 
-export const useChatSocket = ({ addKey, updateKey, queryKey }: ChatSocketProps) => {
-
+//dios en ti confio 
+export const useChatSocket = ({
+    addKey,
+    updateKey,
+    queryKey
+}: ChatSocketProps) => {
     const { socket } = useSocket();
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        if (!socket) return;
+        if (!socket) {
+            return;
+        }
 
-        socket.on(updateKey, (message: MessageWithMember) => {
+        socket.on(updateKey, (message: MessageWithMemberWithProfile) => {
             queryClient.setQueryData([queryKey], (oldData: any) => {
                 if (!oldData || !oldData.pages || oldData.pages.length === 0) {
                     return oldData;
@@ -31,50 +39,46 @@ export const useChatSocket = ({ addKey, updateKey, queryKey }: ChatSocketProps) 
                 const newData = oldData.pages.map((page: any) => {
                     return {
                         ...page,
-                        items: page.items.map((item: MessageWithMember) => {
-
-                            if (item.id === message.id) return message;
-
+                        items: page.items.map((item: MessageWithMemberWithProfile) => {
+                            if (item.id === message.id) {
+                                return message;
+                            }
                             return item;
                         })
                     }
-                })
-
-                return {
-                    ...oldData,
-                    pages: newData
-                }
-
-            });
-
-        })
-
-        socket.on(addKey, (message: MessageWithMember) => {
-            queryClient.setQueryData([queryKey], (oldData: any) => {
-                if (!oldData || !oldData.pages || oldData.pages.length === 0) {
-                    return {
-                        pages: [{
-                            items: [message]
-                        }]
-                    };
-                }
-
-                const newData = [...oldData.pages];
-
-                newData[0].items = {
-                    ...newData[0],
-                    items: {
-                        message,
-                        ...oldData[0].items
-                    }
-                };
+                });
 
                 return {
                     ...oldData,
                     pages: newData,
                 }
+            })
+        });
 
+        socket.on(addKey, (message: MessageWithMemberWithProfile) => {
+            queryClient.setQueryData([queryKey], (oldData: any) => {
+                if (!oldData || !oldData.pages || oldData.pages.length === 0) {
+                    return {
+                        pages: [{
+                            items: [message],
+                        }]
+                    }
+                }
 
+                const newData = [...oldData.pages];
+
+                newData[0] = {
+                    ...newData[0],
+                    items: [
+                        message,
+                        ...newData[0].items,
+                    ]
+                };
+
+                return {
+                    ...oldData,
+                    pages: newData,
+                };
             });
         });
 
@@ -82,6 +86,5 @@ export const useChatSocket = ({ addKey, updateKey, queryKey }: ChatSocketProps) 
             socket.off(addKey);
             socket.off(updateKey);
         }
-
-    }, [queryClient, socket, addKey, updateKey, queryKey]);
+    }, [queryClient, addKey, queryKey, socket, updateKey]);
 }

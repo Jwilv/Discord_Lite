@@ -6,16 +6,15 @@ type ChatScrollProps = {
     shouldLoadMore: boolean;
     loadMore: () => void;
     count: number;
-}
+};
 
 export const useChatScroll = ({
     chatRef,
     bottomRef,
     shouldLoadMore,
     loadMore,
-    count
+    count,
 }: ChatScrollProps) => {
-
     const [hasInitialized, setHasInitialized] = useState(false);
 
     useEffect(() => {
@@ -25,39 +24,40 @@ export const useChatScroll = ({
             const scrollTop = topDiv?.scrollTop;
 
             if (scrollTop === 0 && shouldLoadMore) {
-                loadMore();
+                loadMore()
             }
         };
 
-        topDiv?.addEventListener('scroll', handleScroll);
+        topDiv?.addEventListener("scroll", handleScroll);
 
-        return () => topDiv?.removeEventListener('scroll', handleScroll);
-
+        return () => {
+            topDiv?.removeEventListener("scroll", handleScroll);
+        }
     }, [shouldLoadMore, loadMore, chatRef]);
 
     useEffect(() => {
         const bottomDiv = bottomRef?.current;
-        const topDiv = chatRef?.current;
-
-        const souldAutoScroll = () => {
+        const topDiv = chatRef.current;
+        const shouldAutoScroll = () => {
             if (!hasInitialized && bottomDiv) {
                 setHasInitialized(true);
                 return true;
             }
 
-            if (!topDiv) return false;
+            if (!topDiv) {
+                return false;
+            }
 
             const distanceFromBottom = topDiv.scrollHeight - topDiv.scrollTop - topDiv.clientHeight;
             return distanceFromBottom <= 100;
-        };
-
-        if (souldAutoScroll()) {
-            setTimeout(() => {
-                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }, 100)
         }
 
-
-    }, [ bottomRef, chatRef, count, hasInitialized])
-
+        if (shouldAutoScroll()) {
+            setTimeout(() => {
+                bottomRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                });
+            }, 100);
+        }
+    }, [bottomRef, chatRef, count, hasInitialized]);
 }

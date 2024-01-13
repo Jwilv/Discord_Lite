@@ -10,6 +10,7 @@ import { format } from 'date-fns'
 import { ChatItem } from "./chat-item";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { redirect } from 'next/navigation';
+import { useChatScroll } from "@/hooks/use-chat-scroll";
 
 
 interface props {
@@ -64,6 +65,13 @@ const ChatMessages = ({
     });
 
     useChatSocket({ queryKey, addKey, updateKey });
+    useChatScroll({
+        chatRef,
+        bottomRef,
+        loadMore: fetchNextPage,
+        shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+        count: data?.pages?.[0]?.items.length ?? 0
+    })
 
 
     if (status === 'loading') {

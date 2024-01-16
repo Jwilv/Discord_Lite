@@ -1,6 +1,5 @@
 "use client";
 
-import { ServerWithMembersWhithProfiles } from "@/types";
 import { MemberRole, ChannelType } from '@prisma/client';
 import {
     DropdownMenu,
@@ -19,9 +18,10 @@ import {
 } from "lucide-react";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import { useModal } from "@/hooks/use-modal-store";
+import { ServerWithMembersWithProfiles } from '@/types';
 
 interface Props {
-    server: ServerWithMembersWhithProfiles
+    server: ServerWithMembersWithProfiles
     role?: MemberRole
 }
 
